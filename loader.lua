@@ -190,7 +190,8 @@ end)
 
 fetchBtn.MouseButton1Click:Connect(function()
 	LoadAimdroid()
-	loadstring(game:HttpGet(Identification))()
+    repeat task.wait() until page_exploits and page_misc
+    loadstring(game:HttpGet(Identification))()
 end)
 
 --==================================================
