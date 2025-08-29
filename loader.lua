@@ -23,6 +23,8 @@ for i = 1, 120 do
 end
 if not mode then return end
 
+Identification = nil
+
 -- ScreenGui
 local loaderGui = Instance.new("ScreenGui")
 loaderGui.Name = "LoaderGui"
@@ -34,10 +36,10 @@ else
 	loaderGui.Parent = game.Players.LocalPlayer.PlayerGui
 end
 
--- Main Frame (square centered box)
+-- Main Frame (wider centered box)
 local mainFrame = Instance.new("Frame")
-mainFrame.Size = UDim2.new(0, 300, 0, 200)
-mainFrame.Position = UDim2.new(0.5, -150, 0.5, -100)
+mainFrame.Size = UDim2.new(0, 500, 0, 200) 
+mainFrame.Position = UDim2.new(0.5, -250, 0.5, -100)
 mainFrame.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
 mainFrame.BorderSizePixel = 0
 mainFrame.Parent = loaderGui
@@ -83,10 +85,10 @@ closeBtn.Parent = topBar
 
 -- Load Button (red)
 local loadBtn = Instance.new("TextButton")
-loadBtn.Size = UDim2.new(0, 200, 0, 40)
-loadBtn.Position = UDim2.new(0.5, -100, 0.5, -40) -- moved up
+loadBtn.Size = UDim2.new(0, 300, 0, 40)
+loadBtn.Position = UDim2.new(0.5, -150, 0.5, -40)
 loadBtn.BackgroundColor3 = Color3.fromRGB(220, 50, 50)
-loadBtn.Text = "Load Aimdroid v1"
+loadBtn.Text = "Aimdroid v1 For ROBLOX"
 loadBtn.Font = Enum.Font.GothamBold
 loadBtn.TextSize = 16
 loadBtn.TextColor3 = Color3.new(1,1,1)
@@ -98,19 +100,21 @@ loadCorner.Parent = loadBtn
 
 -- Fetching Button (grey)
 local fetchBtn = Instance.new("TextButton")
-fetchBtn.Size = UDim2.new(0, 200, 0, 40)
-fetchBtn.Position = UDim2.new(0.5, -100, 0.5, 20) -- also moved up
+fetchBtn.Size = UDim2.new(0, 300, 0, 40)
+fetchBtn.Position = UDim2.new(0.5, -150, 0.5, 20)
 fetchBtn.BackgroundColor3 = Color3.fromRGB(120, 120, 120)
 fetchBtn.Text = "Fetching..."
 fetchBtn.Font = Enum.Font.GothamBold
 fetchBtn.TextSize = 16
 fetchBtn.TextColor3 = Color3.new(1,1,1)
 fetchBtn.AutoButtonColor = false
+fetchBtn.Active=false
 fetchBtn.Parent = mainFrame
 
 local fetchCorner = Instance.new("UICorner")
 fetchCorner.CornerRadius = UDim.new(0, 6)
 fetchCorner.Parent = fetchBtn
+
 
 --==================================================
 -- DRAGGING FUNCTIONALITY
@@ -158,6 +162,18 @@ end
 -- FUNCTIONS
 --==================================================
 
+function Identify()
+	local url = "https://raw.githubusercontent.com/Aimdroid/Aimdroid-RGUI/refs/heads/main/Extension/" .. game.PlaceId .. ".lua"
+	local success, result = pcall(function()
+		return game:HttpGet(url)
+	end)
+	if success and result and #result > 0 then
+		return url
+	else
+		return false
+	end
+end
+
 -- Close button logic
 closeBtn.MouseButton1Click:Connect(function()
 	loaderGui:Destroy()
@@ -165,9 +181,32 @@ end)
 
 -- Load button logic
 local function LoadAimdroid()
-	
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/Aimdroid/Aimdroid-RGUI/refs/heads/main/main.lua"))()
 end
 
 loadBtn.MouseButton1Click:Connect(function()
 	LoadAimdroid()
 end)
+
+fetchBtn.MouseButton1Click:Connect(function()
+	LoadAimdroid()
+	loadstring(game:HttpGet(Identification))()
+end)
+
+--==================================================
+-- IDENTIFICATION
+--==================================================
+
+Identification=Identify()
+
+if Identification then
+	local name
+	pcall(function()
+		name = game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name
+	end)
+	fetchBtn.Text="Load Aimdroid For "..(name or "TUNG TUNG TUNG TUNG TUNG TUNG TUNG TUNG")
+	fetchBtn.BackgroundColor3=Color3.new(0,1,0)
+	fetchBtn.Active=true
+else
+	fetchBtn.Text="Game not supported"
+end
