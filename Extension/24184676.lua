@@ -23,12 +23,14 @@ page_exploits:AddToggle({
 	Callback = function(v)
 		global_hunterexploit = v
 		if global_hunterexploit then
+			game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored=true
 			while global_hunterexploit and game.Players.LocalPlayer.Team==game.Teams.Zombies do
 				for _, v in game.Teams.Zombies:GetPlayers() do
 					RE.UserInputEvent:FireServer("LungeHit", v)
 				end
 				task.wait()
 			end
+			game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored=false
 		end
 	end
 })
