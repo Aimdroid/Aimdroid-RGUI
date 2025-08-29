@@ -396,7 +396,7 @@ local function ispossibleray(p)
 	table.sort(dims)
 	return dims[1] <= tung and dims[2] <= tung
 end
-
+ignore_team=false
 local function get_nearest_object()
 	local localPlayer = game.Players.LocalPlayer
 	local character = localPlayer.Character
@@ -409,6 +409,7 @@ local function get_nearest_object()
 
 	for _, v in ipairs(esp_models) do
 		if v.model then
+			if ignore_team and v.colour==game.Players.LocalPlayer.TeamColor.Color then continue end
 			local partsToCheck = {v.model:FindFirstChild("HumanoidRootPart"), v.model:FindFirstChild("Head")}
 			for _, part in ipairs(partsToCheck) do
 				if part then
