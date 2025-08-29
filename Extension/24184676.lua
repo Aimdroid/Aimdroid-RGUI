@@ -23,8 +23,8 @@ page_exploits:AddToggle({
 	Callback = function(v)
 		global_hunterexploit = v
 		if global_hunterexploit then
-			while global_hunterexploit and game.Players.LocalPlayer.Team==game.Teams.Zombie do
-				for _, v in game.Teams.Zombie:GetPlayers() do
+			while global_hunterexploit and game.Players.LocalPlayer.Team==game.Teams.Zombies do
+				for _, v in game.Teams.Zombies:GetPlayers() do
 					RE.UserInputEvent:FireServer("LungeHit", v)
 				end
 				task.wait()
