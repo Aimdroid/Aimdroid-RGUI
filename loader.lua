@@ -162,6 +162,7 @@ end
 -- FUNCTIONS
 --==================================================
 
+Identification=nil
 function Identify()
 	local url = "https://raw.githubusercontent.com/Aimdroid/Aimdroid-RGUI/refs/heads/main/Extension/" .. game.PlaceId .. ".lua"
 	local success, result = pcall(function()
@@ -180,8 +181,8 @@ closeBtn.MouseButton1Click:Connect(function()
 end)
 
 -- Load button logic
-local function LoadAimdroid()
-	loadstring(game:HttpGet("https://raw.githubusercontent.com/Aimdroid/Aimdroid-RGUI/refs/heads/main/main.lua"))()
+local function LoadAimdroid(arg1)
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/Aimdroid/Aimdroid-RGUI/refs/heads/main/main.lua")..(arg1 or ""))()
 end
 
 loadBtn.MouseButton1Click:Connect(function()
@@ -189,9 +190,7 @@ loadBtn.MouseButton1Click:Connect(function()
 end)
 
 fetchBtn.MouseButton1Click:Connect(function()
-	LoadAimdroid()
-    repeat task.wait() until page_exploits and page_misc
-    loadstring(game:HttpGet(Identification))()
+	LoadAimdroid(game:HttpGet(Identification))
 end)
 
 --==================================================
